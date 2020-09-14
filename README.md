@@ -1,1 +1,2 @@
-# Project-1
+# COVID-19 Status Tracker App
+
