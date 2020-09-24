@@ -28,7 +28,8 @@ public class Student {
 	  return this.residence;
 	}
 	public void printStudent() {
-	  System.out.println("Name: " + this.name + " health status: " + this.healthStatus + " residence: " + this.residence);		  
+	  System.out.println("Name: " + this.name + " /nHealth status: " + this.healthStatus + " /nResidence: " + 
+			  this.residence);	  
 	}
 
 }
