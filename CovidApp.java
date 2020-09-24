@@ -44,7 +44,7 @@ public class CovidApp {
     }
 	//other team members...
 	public boolean put(Student student) {
-	    long id = student.id; // this is the key
+	    int id = student.id; // this is the key
 
 	}
 	
