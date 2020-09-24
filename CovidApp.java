@@ -7,11 +7,11 @@ public class CovidApp {
 	LinkedList<Student>[] hashTable;
 	@SuppressWarnings("unchecked")
 	int numElements = 0;
-	public CovidApp(String textFilePath) {
+	public CovidApp() {
 	  //initially 10?
 	  hashTable = new LinkedList[10];
 	  
-	  load(textFilePath);
+	  
 	  
 	}
 
