@@ -15,7 +15,7 @@ public class CovidApp {
   }
 
   // other team members...
-  public boolean addStudent(Student student) {
+  public boolean addStudent(int id, String name, String healthStatus, String housingStatus) {
     long id = student.id; // this is the key
     return false;
   }
