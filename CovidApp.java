@@ -20,7 +20,7 @@ public class CovidApp {
     return false;
   }
 
-  public Student getStudentInformation(int key) throws NoSuchElementException {
+  public Student getStudentInformation(int id) throws NoSuchElementException {
     return new Student(123456789, "Hayden Williams", "positive", "on-campus");
   }
 
@@ -28,11 +28,11 @@ public class CovidApp {
     return hashTable.size();
   }
   
-  public boolean containsStudent(int key) {
+  public boolean containsStudent(int id) {
     return false;
   }
   
-  public Student removeStudent(int key) {
+  public Student removeStudent(int id) {
     return new Student(123456789, "Hayden Williams", "positive", "on-campus");
   }
   
