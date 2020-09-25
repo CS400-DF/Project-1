@@ -27,9 +27,10 @@ public class Student {
 	public String getResidence() {
 	  return this.residence;
 	}
+   
 	public void printStudent() {
 	  System.out.println("Name: " + this.name + " /nHealth status: " + this.healthStatus + " /nResidence: " + 
-			  this.residence);	  
+			  this.residence);
+			  
 	}
-
 }
