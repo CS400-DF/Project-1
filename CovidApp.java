@@ -78,55 +78,64 @@ public class CovidApp {
   }
   
   /**
-   * This method loads information from a file to the map
-   * @param textFile
+   * @author Nicole Gathman
+   * Method loads student information into the hash table from a parsed text file
+   * Skips students with incorrect student information
+   * @return textFile is the string name of the information file given by user
    */
   public void loadFile(String textFile) {
-    ArrayList<String> options = new ArrayList<>();
+    ArrayList<String> options = new ArrayList<>(); 
     options.add("positive");
     options.add("negative");
     options.add("results-pending");
     options.add("on-campus");
     options.add("off-campus");
+    int fileLine = 0;
     try {
       Scanner scan = new Scanner(new File(textFile));
-      while (scan.hasNextLine()) {
-        if (scan.nextLine().contains(",") == false) {
-          System.out.println("Student information needs to be separated by commas" + "\n"
-              + "_______STUDENT IS SKIPPED_____");
-        } else {
-          String[] data = scan.nextLine().split(",");
-          if (data.length != 4) {
-            System.out.println(
-                "Student information is invalid" + "\n" + "_______STUDENT IS SKIPPED_____");
+      while(scan.hasNextLine()) {
+        fileLine++;
+        String currentLine = scan.nextLine();
+        if(currentLine.contains(",") == false) {
+          System.out.println("Student information needs to be separated by commas"
+              + "at line number " + fileLine+ "\n" + "_______STUDENT IS SKIPPED_____");
+        }
+        else {    
+          String[] data = currentLine.split(",");
+          if(data.length != 4) {
+        System.out.println("Student information is invalid"
+                + " at line number " + fileLine + "\n" + "_______STUDENT IS SKIPPED_____");
           }
           // indexes....0 = ID, 1 = Name, 2 = status, 3 = residence
-          else if (containsStudent(Integer.parseInt(data[0])) == true) {
+          else if(containsStudent(Integer.parseInt(data[0])) == true){
             System.out.println("Student with ID: " + data[0] + " already exists" + "/n "
                 + "_______STUDENT IS SKIPPED_____");
-          } else if (data[0].length() != 9) {
-            System.out.println("Student with ID: " + data[0] + " is invalid" + "\n "
-                + "_______STUDENT IS SKIPPED_____");
-          } else if (options.contains(data[2].toLowerCase()) == false
-              || options.contains(data[3].toLowerCase()) == false) {
-            System.out.println(
-                "Information entered is invalid" + "\n" + "_______STUDENT IS SKIPPED_____");
-          } else {
-            System.out.println("add");
-            addStudent(Integer.parseInt(data[0]), data[1], data[2], data[3]);
           }
+          else if(data[0].length() != 9){
+            System.out.println("Student with ID: " + data[0] + " at line " +fileLine +
+                " is invalid" + "\n " + "_______STUDENT IS SKIPPED_____");
+          }
+          else if(options.indexOf(data[2].toLowerCase()) == -1 || 
+              options.indexOf(data[3].toLowerCase()) == -1) {
+            System.out.println("Information entered is invalid at line number " + fileLine
+                + "\n" + "_______STUDENT IS SKIPPED_____");
+          }
+          else {
+            addStudent(Integer.parseInt(data[0]), data[1], data[2], data[3]);
+          } 
         }
-      }
-      scan.close();
-    } catch (NoSuchElementException e) {
-      e.getMessage();
-    } catch (IllegalStateException e) {
-      e.getMessage();
-    } catch (FileNotFoundException e) {
+          }
+      scan.close(); 
+    }
+    catch(NoSuchElementException e) {
       e.getMessage();
     }
-    
-    
+    catch(IllegalStateException e) {
+      e.getMessage();  
+    }
+        catch(FileNotFoundException e) {
+      e.getMessage();
+    }
   }
 
 
