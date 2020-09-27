@@ -24,8 +24,9 @@ public class CovidAppDriver {
   /**
    * Processes and runs the user command line
    * 
-   * @param command
-   * @param covidApp
+   * @param command User's command string
+   * @param covidApp Instance of covidApp class that Students are being added into
+   * @return False if user wants to quit midway through a command and true otherwise
    */
   private static boolean processUserCommandLine(String command, CovidApp covidApp,
       Scanner scanner) {
@@ -78,18 +79,16 @@ public class CovidAppDriver {
       default: // command doesn't exist
         System.out.println("WARNING. Invalid command. Please enter H and refer to the menu.");
     }
+    
     return true;
-
   }
 
   /**
    * Driver method for the Covid-19 Tracker application (reads and processes user command lines)
-   * 
    */
   private static void driver() {
-    // create a new instance of covidApp
+    // Initialize variables
     CovidApp covidHashTable = new CovidApp();
-
     Scanner scanner = new Scanner(System.in);
     String promptCommandLine = "\nENTER COMMAND: ";
 
@@ -130,46 +129,78 @@ public class CovidAppDriver {
   /**
    * Checks if the user wants to quit at any point
    * 
-   * @param input
-   * @return
+   * @param input User's input as a string
+   * @return True if user enters "q" and false otherwise
    */
   private static boolean checkIfQuit(String input) {
     if (input.trim().equalsIgnoreCase("q")) {
       return true;
     }
+    
     return false;
   }
 
   /**
+   * Checks if the user has entered a valid ID number
+   * 
+   * @param id User's ID number input as a string
+   * @return True if user enters a valid ID and false otherwise 
+   */
+  private static boolean checkIfValidID(String id) {
+    try {
+      Integer.parseInt(id);
+    } catch (NumberFormatException e) {
+      System.out.println("Invalid ID format. Student ID number must be a single 9 digit number.");
+      return false;
+    }
+    if (id.length() != 9) {
+      System.out.println("Invalid ID format. Student ID number must be a single 9 digit number.");
+      return false;
+    }
+    
+    return true;
+  }
+  /**
    * Helps with the functionality of loading a text file of Students into the application.
    * 
-   * @param covidApp
-   * @param scanner
-   * @return 
+   * @param covidApp Instance of CovidApp class that Students are being added into
+   * @param scanner Scanner used to read user input
+   * @return False if user wants to quit midway through this command and true otherwise
    */
   private static boolean loadHelper(CovidApp covidApp, Scanner scanner) {
     String fileName = null;
     System.out.print(
-        "Please enter the name of the text file of Students you would like to load into the application: ");
-    fileName = scanner.nextLine();
+        "Please enter the name of the text file of Students you would like to load into the application in the form <FileName>.txt : ");
+    fileName = scanner.nextLine().trim();
+    
+    // check if user has entered 'q' to quit
     if (checkIfQuit(fileName)) {
       return false;
     }
-    covidApp.loadFile(fileName);
-    System.out.println("File of students successfully loaded into the application");
+    
+    // Try to load file of Students into the system
+    if (covidApp.loadFile(fileName) == false) {
+      System.out.println("File of sftudents uncessessfully loaded into the application. Please hit [L] and try again.");
+    }
+    else {
+      System.out.println("File of students successfully loaded into the application.");
+    }
+    
     return true;
   }
 
   /**
    * Helps with the functionality of adding a Student to the application.
    * 
-   * @param covidApp
-   * @param scanner
-   * @return 
+   * @param covidApp Instance of the CovidApp class
+   * @param scanner Scanner used to read user input
+   * @return False if user wants to quit midway through this command and true otherwise
    */
   private static boolean putHelper(CovidApp covidApp, Scanner scanner) {
     boolean correctIdInput = false;
-    while (correctIdInput == false) { // keep polling user for valid ID number
+    
+    // keep polling user for valid ID number
+    while (correctIdInput == false) {
       // initialize variables
       String id = null;
       String name = null;
@@ -177,61 +208,72 @@ public class CovidAppDriver {
       String healthStatus = null;
       
       System.out.print("Enter 9 digit student ID number: ");
-      
       id = scanner.nextLine().trim();
-      if (checkIfQuit(id)) {
+      
+      // check if user has entered 'q' to quit
+      if (checkIfQuit(id)) { 
         return false;
       }
       
-      try {
-        Integer.parseInt(id);
-      } catch (NumberFormatException e) {
-        System.out.println("Invalid ID format. Student ID number must be a single 9 digit number.");
-        continue;
-      }
-      if (id.length() != 9) {
-        System.out.println("Invalid ID format. Student ID number must be a single 9 digit number.");
+      // check for correct ID input
+      if (checkIfValidID(id) == false) {
         continue;
       }
       
+      // check if user has already been entered into the system
       if (covidApp.containsStudent(Integer.parseInt(id)) == true) {
         System.out.println("A student with that ID already exists in the hashtable.");
+      
+      // else add the Student into the system
       } else {
         System.out.print("Enter Student's name: ");
         name = scanner.nextLine();
-        if (checkIfQuit(name)) {
+        
+        // check if user entered 'q' to quit
+        if (checkIfQuit(name)) { 
           return false;
         }
         
         boolean correctHealthStatusInput = false;
-        while (correctHealthStatusInput == false) { // keep polling user for a valid healthStatus input
+        
+        // keep polling user for a valid healthStatus input
+        while (correctHealthStatusInput == false) { 
           System.out.print(
               "Enter Student's health status (either \"positive\", \"negative\", or \"results-pending\": ");
           healthStatus = scanner.nextLine().trim();
-          if (checkIfQuit(healthStatus)) {
+          
+          // check if user entered 'q' to quit
+          if (checkIfQuit(healthStatus)) { 
             return false;
           }
           
+          // check for correct healthStatus input
           if (!healthStatus.equalsIgnoreCase("positive")
               && !healthStatus.equalsIgnoreCase("negative")
               && !healthStatus.equalsIgnoreCase("results-pending")) {
-            System.out.println("Student's health status invalid");
+            System.out.println("Student's health status invalid.");
             continue;
           }
           correctHealthStatusInput = true;
         }
         
         boolean correctHousingStatusInput = false;
-        while (correctHousingStatusInput == false) { // keep polling user for a valid housingStatus input
+        
+        // keep polling user for a valid housingStatus input
+        while (correctHousingStatusInput == false) { 
           System.out
               .print("Enter Student's housing status (either \"on-campus\" or \"off-campus\"): ");
           housingStatus = scanner.nextLine().trim();
+          
+          // check if user entered 'q' to quit
           if (checkIfQuit(housingStatus)) {
             return false;
           }
+          
+          // check for correct housingStatus input
           if (!housingStatus.equalsIgnoreCase("off-campus")
               && !housingStatus.equalsIgnoreCase("on-campus")) {
-            System.out.println("Student's housing status invalid");
+            System.out.println("Student's housing status invalid.");
             continue;
           }
           correctHousingStatusInput = true;
@@ -243,117 +285,123 @@ public class CovidAppDriver {
       }
       correctIdInput = true;
     }
+    
     return true;
   }
 
   /**
-   * Assists with the functionality of getting a Student
+   * Assists with the functionality of getting a Student Object
    * 
-   * @param covidApp
-   * @param scanner
-   * @return 
+   * @param covidApp Instance of the CovidApp class
+   * @param scanner Scanner used to read user input
+   * @return False if user wants to quit midway through this command and true otherwise
    */
   private static boolean getHelper(CovidApp covidApp, Scanner scanner) {
     boolean correctIdInput = false;
     String id = null;
-    while (correctIdInput == false) { // keep polling user for a valid ID number
+    
+    // keep polling user for a valid ID number
+    while (correctIdInput == false) { 
       System.out.print("Enter 9 digit student ID number: ");
-      id = scanner.nextLine();
-      if (checkIfQuit(id)) {
+      id = scanner.nextLine().trim();
+      
+      // check if user has entered 'q' to quit
+      if (checkIfQuit(id)) { 
         return false;
       }
-      try {
-        Integer.parseInt(id);
-      } catch (NumberFormatException e) {
-        System.out.println("Invalid ID format. Student ID number must be a single 9 digit number.");
+      
+      // check for correct ID input
+      if (checkIfValidID(id) == false) {
         continue;
       }
-      if (id.length() != 9) {
-        System.out.println("Invalid ID format. Student ID number must be a single 9 digit number.");
-        continue;
-      }
+      
       correctIdInput = true;
     }
+    
+    // try to get Student information
     try {
-      covidApp.getStudentInformation(Integer.parseInt(id)).print();
+      covidApp.getStudentInformation(Integer.parseInt(id)).printStudent();
     } catch (NoSuchElementException e) {
       System.out.println("There is no existing student with that ID number.");
     }
+    
     return true;
   }
 
   /**
    * Assists with the functionality of checking if a Student exists in the application.
    * 
-   * @param covidApp
-   * @param scanner
-   * @return 
+   * @param covidApp Instance of the CovidApp class
+   * @param scanner Scanner used to read user input
+   * @return False if user wants to quit midway through this command and true otherwise
    */
   public static boolean containsKeyHelper(CovidApp covidApp, Scanner scanner) {
     boolean correctIdInput = false;
     String id = null;
-    while (correctIdInput == false) { // keep polling user for a valid ID number
+    
+    // keep polling user for a valid ID number
+    while (correctIdInput == false) { 
       System.out.print("Enter 9 digit student ID number: ");
-      id = scanner.nextLine();
-      if (checkIfQuit(id)) {
+      id = scanner.nextLine().trim();
+      
+      // check if user has entered 'q' to quit
+      if (checkIfQuit(id)) { 
         return false;
       }
-      try {
-        Integer.parseInt(id);
-      } catch (NumberFormatException e) {
-        System.out.println("Invalid ID format. Student ID number must be a single 9 digit number.");
-        continue;
-      }
-      if (id.length() != 9) {
-        System.out.println("Invalid ID format. Student ID number must be a single 9 digit number.");
+      
+      // check for correct ID input
+      if (checkIfValidID(id) == false) {
         continue;
       }
       correctIdInput = true;
     }
+    
+    // check if Student exists in the system
     if (covidApp.containsStudent(Integer.parseInt(id)) == true) {
       System.out.println("A student with this ID number exists in the system.");
     } else {
       System.out.println("A student with this ID number does not exist in the system.");
     }
+    
     return true;
   }
 
   /**
    * Helps with the functionality of removing a student from the application
    * 
-   * @param covidApp
-   * @param scanner
-   * @return 
+   * @param covidApp Instance of the CovidApp class
+   * @param scanner Scanner used to read user input
+   * @return False if user wants to quit midway through this command and true otherwise
    */
   private static boolean removeHelper(CovidApp covidApp, Scanner scanner) {
     boolean correctIdInput = false;
     String id = null;
-    while (correctIdInput == false) { // keep polling user for a valid ID number
+    
+    // keep polling user for a valid ID number
+    while (correctIdInput == false) { 
       System.out.print("Enter 9 digit student ID number: ");
-      id = scanner.nextLine();
-      if (checkIfQuit(id)) {
+      id = scanner.nextLine().trim();
+      
+      // check if user has entered 'q' to quit
+      if (checkIfQuit(id)) { 
         return false;
       }
-      try {
-        Integer.parseInt(id);
-      } catch (NumberFormatException e) {
-        System.out.println("Invalid ID format. Student ID number must be a single 9 digit number.");
-        continue;
-      }
-      if (id.length() != 9) {
-        System.out.println("Invalid ID format. Student ID number must be a single 9 digit number.");
+      
+      // check for correct ID input
+      if (checkIfValidID(id) == false) {
         continue;
       }
       correctIdInput = true;
     }
+    
+    // try to remove Student from the system if possible
     if (covidApp.removeStudent(Integer.parseInt(id)) == null) {
       System.out.println(
           "Student with this ID number doesn't exist in the system and therefore cannot be deleted.");
     } else {
       System.out.println("Student with this ID number has been deleted from the system");
     }
+    
     return true;
   }
-
-
 }
