@@ -179,7 +179,7 @@ public class CovidAppDriver {
     }
     
     // Try to load file of Students into the system
-    if (covidApp.loadFile(fileName) == false) {
+    if (covidApp.load(fileName) == false) {
       System.out.println("File of sftudents uncessessfully loaded into the application. Please hit [L] and try again.");
     }
     else {
