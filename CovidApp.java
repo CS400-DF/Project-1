@@ -12,7 +12,7 @@ public class CovidApp {
 
 	public HashTableMap<Integer, Student> map;
 	public String[] healthStatus = new String[] { "positive", "negative", "results-pending" };
-	public String[] location = new String[] { "on-campus", "off-campus" };
+	public String[] location = new String[] { "off-campus", "on-campus" };
 
 	public CovidApp() {
 		this.map = new HashTableMap();
@@ -96,9 +96,12 @@ public class CovidApp {
 		int lineCount = 0;
 		try {
 			// checks if file exists
+			
 			data = new File(FileName);
+			
 			scnr = new Scanner(data);
 			while (scnr.hasNextLine()) {
+				
 				// file is parsed
 				lineCount++;
 				// lines are counted to indicate errors to the user
@@ -151,16 +154,16 @@ public class CovidApp {
 		}
 		for (int j = 0; j < location.length; j++) {
 			//checks if the status falls under one of the 2 possible residential statuses
-			if (data[3].equalsIgnoreCase(location[j])) {
-				checkStatus = true;
+			if (data[3].equalsIgnoreCase(location[j])) {				
+				checkLocation = true;
 				break;
 			}
 		}
 		//length of the id must be 9
-		if (data[0].length() == 9) {
+		if (data[0].length() == 9) {			
 			checkIdSize = true;
 		}
-		
+		//System.out.print(checkIdSize && checkStatus && checkLocation);
 		return checkStatus && checkLocation && checkIdSize;
 	}
 
