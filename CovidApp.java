@@ -19,7 +19,8 @@ public class CovidApp {
 	 * Skips students with incorrect student information
 	 * @return textFile is the string name of the information file given by user
 	 */
-	public void load(String textFile) {
+	public boolean load(String textFile) {
+          boolean fileCorrect = true;
 	  ArrayList<String> options = new ArrayList<>(); 
 	  options.add("positive");
 	  options.add("negative");
@@ -65,14 +66,19 @@ public class CovidApp {
 	  }
 	  catch(NoSuchElementException e) {
 	    e.getMessage();
+	    fileCorrect = false;
 	  }
 	  catch(IllegalStateException e) {
-	    e.getMessage();  
+	    e.getMessage(); 
+            fileCorrect = false;
 	  }
           catch(FileNotFoundException e) {
-		e.getMessage();
+	    e.getMessage();
+	    fileCorrect = false;
 	  }
-    }
+	  finally{
+            return fileCorrect;
+         }
 
 
 	
