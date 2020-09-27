@@ -180,7 +180,7 @@ public class CovidAppDriver {
     
     // Try to load file of Students into the system
     if (!(covidApp.parseFile(fileName))) {
-      System.out.println("File of sftudents uncessessfully loaded into the application. Please hit [L] and try again.");
+      System.out.println("File of students uncessessfully loaded into the application. Please hit [L] and try again.");
     }
     else {
       System.out.println("File of students successfully loaded into the application.");
