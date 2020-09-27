@@ -226,7 +226,7 @@ public class HashTableMap<KeyType, ValueType> implements MapADT<KeyType,ValueTyp
 					break;
 				}
 			}
-			return (ValueType) toBeDeleted.getValue();
+			return (ValueType) toBeDeleted;
 		}
 		return null;
 

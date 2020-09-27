@@ -89,7 +89,7 @@ public class CovidApp {
 	 * @param FileName
 	 * @return true or false depending on whether the file was parsed correctly
 	 */
-	public boolean parseFile(String FileName) {
+	public boolean load(String FileName) {
 		boolean fileFound = true;
 		File data;
 		Scanner scnr;
