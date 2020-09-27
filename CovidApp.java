@@ -1,13 +1,13 @@
-
+/**
+ * @author abhay
+ *
+ */
 import java.io.*;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-/**
- * @author
- *
- */
+
 public class CovidApp {
 
 	public HashTableMap<Integer, Student> map;
